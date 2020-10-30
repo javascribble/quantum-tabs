@@ -6,3 +6,7 @@ body {
 div {
     padding: 5px;
 }
+
+quantum-tabs {
+    height: 50%;
+}
