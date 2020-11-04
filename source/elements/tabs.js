@@ -1,9 +1,10 @@
+import { Component, template, define, setAttribute } from '../import.js';
 import html from '../templates/tabs.js';
 
-export class Tabs extends quantum.Component {
+export class Tabs extends Component {
     #panels = new Set();
 
-    static template = quantum.template(html);
+    static template = template(html);
 
     //static get observedAttributes() { return ['dock']; } // TODO: Add dock/lock controls.
 
@@ -19,8 +20,8 @@ export class Tabs extends quantum.Component {
 
     #activate(event) {
         const tabName = event.target.name;
-        this.#panels.forEach(panel => quantum.setAttribute(panel, 'active', panel.getAttribute('name') === tabName));
+        this.#panels.forEach(panel => setAttribute(panel, 'active', panel.getAttribute('name') === tabName));
     }
 }
 
-quantum.define('quantum-tabs', Tabs);
+define('quantum-tabs', Tabs);
