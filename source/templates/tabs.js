@@ -1,6 +1,6 @@
 export default `
 <style>
-    ::slotted([slot="panel"]:not([active])) {
+    ::slotted([slot="content"]:not([active])) {
         display: none;
     }
 
@@ -10,5 +10,5 @@ export default `
     }
 </style>
 <slot name="tab"></slot>
-<slot name="panel"></slot>
+<slot name="content"></slot>
 `;
