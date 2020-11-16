@@ -1,12 +1,11 @@
 export default `
 <style>
-    ::slotted([slot="content"]:not([active])) {
-        display: none;
-    }
-
     :host {
         display: block;
-        height: 100%;
+    }
+    
+    ::slotted([slot="content"]:not([active])) {
+        display: none;
     }
 </style>
 <slot name="tab"></slot>
