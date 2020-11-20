@@ -3,6 +3,10 @@ body {
     margin: 0;
 }
 
+div {
+    height: 100%;
+}
+
 quantum-tabs {
     height: 50%;
 }
