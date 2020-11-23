@@ -1,0 +1,1 @@
+export const dragStart = event => event.dataTransfer.setData('id', quantum.getAttribute(event.target, 'content'));

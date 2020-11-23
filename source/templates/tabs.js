@@ -5,18 +5,14 @@ export default `
         flex-direction: column;
     }
 
-    ::slotted([slot="content"]:not([active])) {
-        display: none;
-    }
-
-    #contents {
+    ::slotted(*) {
         flex-grow: 1;
     }
+
+    ::slotted(:not([active])) {
+        display: none;
+    }
 </style>
-<div id="tabs">
-    <slot name="tab"></slot>
-</div>
-<div id="contents">
-    <slot name="content"></slot>
-</div>
+<div id="tabs"></div>
+<slot></slot>
 `;

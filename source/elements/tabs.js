@@ -1,35 +1,51 @@
 import { Component, template, define, getAttribute, setAttribute } from '../import.js';
+import { enableReorder, disableReorder } from '../utilities/reorder.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
-    #activate = (event => this.active = getAttribute(event.target, 'content')).bind(this);
-    #validate = (element => this.active === element.id).bind(this);
+    #tabs = this.shadowRoot.querySelector('#tabs');
 
     static template = template(html);
 
-    static get observedAttributes() { return ['active', 'dock']; }
+    static get observedAttributes() { return ['active', 'toggle', 'dock']; }
 
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
-        if (slot.name === 'tab') {
-            addedElements.forEach(element => element.addEventListener('click', this.#activate));
-            deletedElements.forEach(element => element.removeEventListener('click', this.#activate));
-        } else if (slot.name === 'content') {
-            addedElements.forEach(element => setAttribute(element, 'active', this.#validate(element)));
-            deletedElements.forEach(element => setAttribute(element, 'active', false));
-            if (currentElements.length === 0) {
-                this.parentElement.removeChild(this);
-            } else if (!currentElements.some(element => this.#validate(element))) {
-                this.active = currentElements[0].id;
-            }
+        for (const addedElement of addedElements) {
+            setAttribute(addedElement, 'active', addedElement.id === this.active);
+
+            const tab = this.#tabs.appendChild(document.createElement('button'));
+            tab.addEventListener('click', event => this.activate(event.target.id));
+            tab.textContent = getAttribute(addedElement, 'name') || addedElement.id;
+            tab.id = addedElement.id;
+        }
+
+        for (const deletedElement of deletedElements) {
+            setAttribute(deletedElement, 'active', false);
+
+            this.#tabs.removeChild(this.shadowRoot.querySelector(`#${deletedElement.id}`));
         }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
         if (attribute === 'active') {
-            this.elements.get(this.slots.get('content')).forEach(content => setAttribute(content, 'active', content.id === currentValue));
+            for (const element of this.elements.get(this.slots.get(''))) {
+                if (element.id === previousValue) {
+                    setAttribute(element, 'active', false);
+                }
+
+                if (element.id === currentValue) {
+                    setAttribute(element, 'active', true);
+                }
+            }
         } else if (attribute === 'dock') {
             // TODO: Support docked tab list.
+        } else if (attribute === 'lock') {
+            // TODO: Disable reordering.
         }
+    }
+
+    activate(id) {
+        this.active = this.hasAttribute('toggle') && this.active === id ? "" : id;
     }
 }
 

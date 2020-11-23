@@ -5,14 +5,11 @@
     </head>
     <body>
         <quantum-tabs active="tab1">
-            <button content="tab1" slot="tab">tab 1 label</button>
-            <button content="tab2" slot="tab">tab 2 label</button>
-            <div id="tab1" slot="content">tab 1 content</div>
-            <div id="tab2" slot="content">tab 2 content</div>
+            <div id="tab1">tab 1 content</div>
+            <div id="tab2">tab 2 content</div>
         </quantum-tabs>
-        <quantum-tabs active="tab3">
-            <button content="tab3" slot="tab">tab 3 label</button>
-            <div id="tab3" slot="content">tab 3 content</div>
+        <quantum-tabs active="tab3" toggle>
+            <div id="tab3">tab 3 content</div>
         </quantum-tabs>
     </body>
 </html>

@@ -3,10 +3,54 @@ body {
     margin: 0;
 }
 
-div {
-    height: 100%;
+quantum-tabs {
+    --color: darkblue;
+    --background-color: none;
+    --letter-spacing: 0.1em;
+    --text-transform: uppercase;
+    --box-sizing: border-box;
+    --border-radius: 3px;
+    --padding: 0.7em 1em;
+    --font-size: inherit;
+    --line-height: 1em;
+    --outline: none;
+    --cursor: pointer;
 }
 
-quantum-tabs {
-    height: 50%;
+quantum-tabs:hover:not([disabled]) {
+    --color: blue;
+    --background-color: aliceblue;
+}
+
+quantum-tabs[disabled] {
+    --color: gray;
+    --cursor: default;
+}
+
+quantum-tabs[theme=border] {
+    --transition: border 0.1s;
+    --border: solid var(--color) 1px;
+}
+
+quantum-tabs[theme=raise] {
+    --transition: box-shadow 0.1s;
+    --box-shadow: 1px 1px 3px -1px black;
+}
+
+    quantum-tabs[theme=raise]:hover:not([disabled]) {
+        --box-shadow: 2px 3px 4px -1px grey;
+    }
+
+quantum-tabs[theme=accent] {
+    --color: snow;
+    --background-color: navy;   
+}
+
+    quantum-tabs[theme=accent]:hover:not([disabled]) {
+        --color: white;
+        --background-color: royalblue;  
+    }
+
+quantum-tabs[theme=round] {
+    --border-radius: 100px;  
 }
