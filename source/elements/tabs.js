@@ -1,34 +1,33 @@
-import { Component, template, define, getAttribute, setAttribute } from '../import.js';
-import { enableReorder, disableReorder } from '../utilities/reorder.js';
+import { Component, template, define, setAttribute } from '../import.js';
+import { cloneTab } from '../utilities/clone.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
-    #tabs = this.shadowRoot.querySelector('#tabs');
-
     static template = template(html);
 
-    static get observedAttributes() { return ['active', 'toggle', 'dock']; }
+    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock']; }
+
+    get tabs() { return this.elements.get(this.slots.get('tabs')); }
+
+    get contents() { return this.elements.get(this.slots.get('')); }
 
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
-        for (const addedElement of addedElements) {
-            setAttribute(addedElement, 'active', addedElement.id === this.active);
+        if (!slot.name) {
+            for (const addedElement of addedElements) {
+                setAttribute(addedElement, 'active', addedElement.id === this.active);
+                this.appendChild(cloneTab(this, addedElement));
+            }
 
-            const tab = this.#tabs.appendChild(document.createElement('button'));
-            tab.addEventListener('click', event => this.activate(event.target.id));
-            tab.textContent = getAttribute(addedElement, 'name') || addedElement.id;
-            tab.id = addedElement.id;
-        }
-
-        for (const deletedElement of deletedElements) {
-            setAttribute(deletedElement, 'active', false);
-
-            this.#tabs.removeChild(this.shadowRoot.querySelector(`#${deletedElement.id}`));
+            for (const deletedElement of deletedElements) {
+                setAttribute(deletedElement, 'active', false);
+                this.removeChild(this.querySelector(`#${deletedElement.id}`));
+            }
         }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
         if (attribute === 'active') {
-            for (const element of this.elements.get(this.slots.get(''))) {
+            for (const element of this.contents.concat(this.tabs)) {
                 if (element.id === previousValue) {
                     setAttribute(element, 'active', false);
                 }
@@ -37,15 +36,13 @@ export class Tabs extends Component {
                     setAttribute(element, 'active', true);
                 }
             }
-        } else if (attribute === 'dock') {
-            // TODO: Support docked tab list.
         } else if (attribute === 'lock') {
-            // TODO: Disable reordering.
+            this.tabs.forEach(tab => tab.lock = this.lock);
         }
     }
 
     activate(id) {
-        this.active = this.hasAttribute('toggle') && this.active === id ? "" : id;
+        this.active = this.hasAttribute('toggle') && this.active === id ? false : id;
     }
 }
 
