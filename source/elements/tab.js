@@ -7,20 +7,12 @@ export class Tab extends Component {
 
     static template = template(html);
 
-    static get observedAttributes() { return ['name', 'active']; }
+    static get observedAttributes() { return ['name', 'pin']; }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
         if (attribute === 'name') {
             this.#button.textContent = currentValue;
         }
-    }
-
-    lock() {
-        disableReorder(this);
-    }
-
-    unlock() {
-        enableReorder(this);
     }
 }
 

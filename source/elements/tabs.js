@@ -1,43 +1,35 @@
 import { Component, template, define, setAttribute } from '../import.js';
-import { cloneTab } from '../utilities/clone.js';
+import { createTab, deleteTab } from '../adapters/tab.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
+    createTab = createTab;
+    deleteTab = deleteTab;
+
     static template = template(html);
 
-    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock']; }
-
-    get tabs() { return this.elements.get(this.slots.get('tabs')); }
-
-    get contents() { return this.elements.get(this.slots.get('')); }
+    static get observedAttributes() { return ['active', 'dock', 'toggle', 'lock']; }
 
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (!slot.name) {
-            for (const addedElement of addedElements) {
-                setAttribute(addedElement, 'active', addedElement.id === this.active);
-                this.appendChild(cloneTab(this, addedElement));
-            }
-
-            for (const deletedElement of deletedElements) {
-                setAttribute(deletedElement, 'active', false);
-                this.removeChild(this.querySelector(`#${deletedElement.id}`));
+            addedElements.forEach(addedElement => this.appendChild(this.createTab(this, addedElement)));
+            deletedElements.forEach(deletedElement => this.removeChild(this.deleteTab(this, deletedElement)));
+            if (!this.active && !this.hasAttribute('toggle') && currentElements.length > 0) {
+                this.active = currentElements[0].id;
             }
         }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
-        if (attribute === 'active') {
-            for (const element of this.contents.concat(this.tabs)) {
-                if (element.id === previousValue) {
-                    setAttribute(element, 'active', false);
-                }
-
-                if (element.id === currentValue) {
-                    setAttribute(element, 'active', true);
+        if (attribute === 'active' && previousValue !== currentValue) {
+            for (const element of Array.from(this.elements.values()).flat()) {
+                const active = element.hasAttribute(attribute);
+                if (active && element.id === previousValue) {
+                    setAttribute(element, attribute, false);
+                } else if (!active && element.id === currentValue) {
+                    setAttribute(element, attribute, true);
                 }
             }
-        } else if (attribute === 'lock') {
-            this.tabs.forEach(tab => tab.lock = this.lock);
         }
     }
 
