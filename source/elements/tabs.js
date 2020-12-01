@@ -1,36 +1,73 @@
-import { Component, template, define, castAttribute } from '../import.js';
-import { appendTab, removeTab } from '../adapters/tab.js';
+import { Component, template, define, castAttribute, getAttribute, setAttribute } from '../import.js';
 import { unlock, lock } from '../utilities/reorder.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
+    #tabs = this.slottedElements.get('tabs');
+
+    constructor() {
+        super();
+
+        this.slots.get('tabs').addEventListener('click', this.#activate.bind(this));
+    }
+
     static template = template(html);
 
     static get observedAttributes() { return ['active', 'dock', 'toggle', 'lock']; }
 
-    get #tabs() { return this.elements.get(this.slots.get('tabs')); }
-
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (!slot.name) {
-            addedElements.forEach(addedElement => appendTab(this, addedElement));
-            deletedElements.forEach(deletedElement => removeTab(this, deletedElement));
-            if (!this.active && !this.toggle) {
+            for (const addedElement of addedElements) {
+                let tab = this.#tabs.find(tab => tab.id === `${addedElement.id}-tab`);
+                if (!tab) {
+                    tab = document.createElement('quantum-tab');
+                    tab.name = getAttribute(addedElement, 'name') || addedElement.id;
+                    tab.id = `${addedElement.id}-tab`;
+                    tab.slot = 'tabs';
+                    setAttribute(tab, 'content', addedElement.id);
+                    this.appendChild(tab);
+                }
+
+                if (this.active === addedElement.id) {
+                    setAttribute(addedElement, 'active', true);
+                    setAttribute(tab, 'active', true);
+                }
+
+                if (!this.lock) {
+                    unlock(tab);
+                }
+            }
+
+            for (const deletedElement of deletedElements) {
+                if (this.active === deletedElement.id) {
+                    setAttribute(deletedElement, 'active', false);
+                    this.active = null;
+                }
+
+                const tab = this.#tabs.find(tab => tab.id === `#${deletedElement.id}-tab`);
+                if (tab) {
+                    this.removeChild(tab);
+                }
+            }
+
+            if (!this.active && !this.toggle && currentElements.length > 0) {
                 this.active = currentElements[0].id;
             }
-        } else if (currentElements.length === 0) {
-            this.parentElement.removeChild(this);
         }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
         if (previousValue !== currentValue) {
             if (attribute === 'active') {
-                for (const tab of this.#tabs) {
-                    const { active, content } = tab;
-                    if (active && content === previousValue) {
-                        tab.active = false;
-                    } else if (!active && content === currentValue) {
-                        tab.active = true;
+                for (const [slot, elements] of this.slottedElements) {
+                    for (const element of elements) {
+                        const id = slot ? getAttribute(element, 'content') : element.id;
+                        const active = getAttribute(element, attribute);
+                        if (active && id === previousValue) {
+                            setAttribute(element, attribute, false);
+                        } else if (!active && id === currentValue) {
+                            setAttribute(element, attribute, true);
+                        }
                     }
                 }
             } else if (attribute === 'lock') {
@@ -41,6 +78,13 @@ export class Tabs extends Component {
 
     activate(id) {
         this.active = this.toggle && this.active === id ? false : id;
+    }
+
+    #activate(event) {
+        const id = getAttribute(event.target, 'content');
+        if (id) {
+            this.activate(id);
+        }
     }
 }
 

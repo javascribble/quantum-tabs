@@ -1,4 +1,4 @@
-const dragStart = event => event.dataTransfer.setData('content', event.target.content);
+const dragStart = event => event.dataTransfer.setData('id', event.target.getAttribute('content'));
 
 export const enableDrag = element => {
     element.draggable = true;
