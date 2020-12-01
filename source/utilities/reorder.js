@@ -1,14 +1,12 @@
-import { dragStart } from '../controls/draggable.js';
-import { dragOver, drop } from '../controls/droppable.js';
+import { enableDrag, disableDrag } from '../controls/draggable.js';
+import { enableDrop, disableDrop } from '../controls/droppable.js';
 
-export const enableReorder = element => {
-    element.addEventListener('dragstart', dragStart);
-    element.addEventListener('dragover', dragOver);
-    element.addEventListener('drop', drop);
+export const unlock = element => {
+    enableDrag(element);
+    enableDrop(element);
 };
 
-export const disableReorder = element => {
-    element.removeEventListener('dragstart', dragStart);
-    element.removeEventListener('dragover', dragOver);
-    element.removeEventListener('drop', drop);
+export const lock = element => {
+    disableDrag(element);
+    disableDrop(element);
 };

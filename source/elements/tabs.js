@@ -1,40 +1,46 @@
-import { Component, template, define, setAttribute } from '../import.js';
-import { createTab, deleteTab } from '../adapters/tab.js';
+import { Component, template, define, castAttribute } from '../import.js';
+import { appendTab, removeTab } from '../adapters/tab.js';
+import { unlock, lock } from '../utilities/reorder.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
-    createTab = createTab;
-    deleteTab = deleteTab;
-
     static template = template(html);
 
     static get observedAttributes() { return ['active', 'dock', 'toggle', 'lock']; }
 
+    get #tabs() { return this.elements.get(this.slots.get('tabs')); }
+
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (!slot.name) {
-            addedElements.forEach(addedElement => this.appendChild(this.createTab(this, addedElement)));
-            deletedElements.forEach(deletedElement => this.removeChild(this.deleteTab(this, deletedElement)));
-            if (!this.active && !this.hasAttribute('toggle') && currentElements.length > 0) {
+            addedElements.forEach(addedElement => appendTab(this, addedElement));
+            deletedElements.forEach(deletedElement => removeTab(this, deletedElement));
+            if (!this.active && !this.toggle) {
                 this.active = currentElements[0].id;
             }
+        } else if (currentElements.length === 0) {
+            this.parentElement.removeChild(this);
         }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
-        if (attribute === 'active' && previousValue !== currentValue) {
-            for (const element of Array.from(this.elements.values()).flat()) {
-                const active = element.hasAttribute(attribute);
-                if (active && element.id === previousValue) {
-                    setAttribute(element, attribute, false);
-                } else if (!active && element.id === currentValue) {
-                    setAttribute(element, attribute, true);
+        if (previousValue !== currentValue) {
+            if (attribute === 'active') {
+                for (const tab of this.#tabs) {
+                    const { active, content } = tab;
+                    if (active && content === previousValue) {
+                        tab.active = false;
+                    } else if (!active && content === currentValue) {
+                        tab.active = true;
+                    }
                 }
+            } else if (attribute === 'lock') {
+                this.#tabs.forEach(castAttribute(attribute, currentValue) ? lock : unlock);
             }
         }
     }
 
     activate(id) {
-        this.active = this.hasAttribute('toggle') && this.active === id ? false : id;
+        this.active = this.toggle && this.active === id ? false : id;
     }
 }
 

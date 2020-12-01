@@ -9,6 +9,10 @@ export default `
         
     }
 
+    slot[name="tabs"] {
+        display: flex;
+    }
+
     slot#content::slotted(*) {
         flex-grow: 1;
     }
@@ -17,6 +21,6 @@ export default `
         display: none;
     }
 </style>
-<div id="tabs"><slot name="tabs"></slot><div>
+<slot name="tabs"></slot>
 <slot id="content"></slot>
 `;
