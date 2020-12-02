@@ -4,12 +4,29 @@
         <script type="module" src="/test/debug.js"></script>
     </head>
     <body>
+        <h3>Normal</h3>
         <quantum-tabs active="tab2">
             <div id="tab1">tab 1 content</div>
             <div id="tab2">tab 2 content</div>
         </quantum-tabs>
+        <h3>Dock</h3>
+        <quantum-tabs dock="left">
+            <div id="tab3">tab 3 content</div>
+        </quantum-tabs>
+        <h3>Toggle</h3>
         <quantum-tabs toggle>
             <div id="tab3">tab 3 content</div>
+        </quantum-tabs>
+        <h3>Drag Lock</h3>
+        <quantum-tabs lock>
+            <div id="tab4">tab 4 content</div>
+        </quantum-tabs>
+        <h3>Drag Group</h3>
+        <quantum-tabs group="test">
+            <div id="tab5">tab 5 content</div>
+        </quantum-tabs>
+        <quantum-tabs group="test">
+            <div id="tab6">tab 6 content</div>
         </quantum-tabs>
     </body>
 </html>

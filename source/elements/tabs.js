@@ -1,19 +1,19 @@
-import { Component, template, define, castAttribute, getAttribute, setAttribute } from '../import.js';
-import { unlock, lock } from '../utilities/reorder.js';
+import { Component, template, define, getAttribute, setAttribute } from '../import.js';
+import { addTabsEvents } from '../utilities/events.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
-    #tabs = this.slottedElements.get('tabs');
+    #tabs = this.slots.get('tabs');
 
     constructor() {
         super();
 
-        this.slots.get('tabs').addEventListener('click', this.#activate.bind(this));
+        addTabsEvents(this);
     }
 
     static template = template(html);
 
-    static get observedAttributes() { return ['active', 'dock', 'toggle', 'lock']; }
+    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock']; }
 
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (!slot.name) {
@@ -22,6 +22,7 @@ export class Tabs extends Component {
                 if (!tab) {
                     tab = document.createElement('quantum-tab');
                     tab.name = getAttribute(addedElement, 'name') || addedElement.id;
+                    tab.draggable = true;
                     tab.id = `${addedElement.id}-tab`;
                     tab.slot = 'tabs';
                     setAttribute(tab, 'content', addedElement.id);
@@ -32,15 +33,11 @@ export class Tabs extends Component {
                     setAttribute(addedElement, 'active', true);
                     setAttribute(tab, 'active', true);
                 }
-
-                if (!this.lock) {
-                    unlock(tab);
-                }
             }
 
             for (const deletedElement of deletedElements) {
+                setAttribute(deletedElement, 'active', false);
                 if (this.active === deletedElement.id) {
-                    setAttribute(deletedElement, 'active', false);
                     this.active = null;
                 }
 
@@ -59,7 +56,7 @@ export class Tabs extends Component {
     attributeChangedCallback(attribute, previousValue, currentValue) {
         if (previousValue !== currentValue) {
             if (attribute === 'active') {
-                for (const [slot, elements] of this.slottedElements) {
+                for (const [slot, elements] of this.slots) {
                     for (const element of elements) {
                         const id = slot ? getAttribute(element, 'content') : element.id;
                         const active = getAttribute(element, attribute);
@@ -70,21 +67,12 @@ export class Tabs extends Component {
                         }
                     }
                 }
-            } else if (attribute === 'lock') {
-                this.#tabs.forEach(castAttribute(attribute, currentValue) ? lock : unlock);
             }
         }
     }
 
     activate(id) {
         this.active = this.toggle && this.active === id ? false : id;
-    }
-
-    #activate(event) {
-        const id = getAttribute(event.target, 'content');
-        if (id) {
-            this.activate(id);
-        }
     }
 }
 

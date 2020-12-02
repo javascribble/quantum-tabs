@@ -1,6 +1,4 @@
-const dragOver = event => event.preventDefault();
-
-const drop = event => {
+export const tabDrop = event => {
     event.preventDefault();
     const { target, dataTransfer } = event;
     const id = dataTransfer.getData('id');
@@ -18,12 +16,8 @@ const drop = event => {
     targetParent.appendChild(content);
 };
 
-export const enableDrop = element => {
-    element.addEventListener('dragover', dragOver);
-    element.addEventListener('drop', drop);
-};
-
-export const disableDrop = element => {
-    element.removeEventListener('dragover', dragOver);
-    element.removeEventListener('drop', drop);
+export const tabsDragOver = event => {
+    if (!event.currentTarget.lock) {
+        event.preventDefault();
+    }
 };
