@@ -21,5 +21,5 @@ export default `
         transition: var(--transition);
     }
 </style>
-<button></button>
+<button draggable="true"></button>
 `;

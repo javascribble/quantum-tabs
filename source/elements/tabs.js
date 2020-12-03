@@ -1,5 +1,6 @@
 import { Component, template, define, getAttribute, setAttribute } from '../import.js';
 import { addTabsEvents } from '../utilities/events.js';
+import { Tab } from './tab.js'
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
@@ -13,37 +14,21 @@ export class Tabs extends Component {
 
     static template = template(html);
 
-    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock']; }
+    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
 
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (!slot.name) {
             for (const addedElement of addedElements) {
-                let tab = this.#tabs.find(tab => tab.id === `${addedElement.id}-tab`);
-                if (!tab) {
-                    tab = document.createElement('quantum-tab');
-                    tab.name = getAttribute(addedElement, 'name') || addedElement.id;
-                    tab.draggable = true;
-                    tab.id = `${addedElement.id}-tab`;
-                    tab.slot = 'tabs';
-                    setAttribute(tab, 'content', addedElement.id);
-                    this.appendChild(tab);
-                }
-
-                if (this.active === addedElement.id) {
-                    setAttribute(addedElement, 'active', true);
-                    setAttribute(tab, 'active', true);
-                }
+                const tab = this.#tabs.find(tab => tab.id === `${addedElement.id}-tab`) || this.appendChild(new Tab(addedElement));
+                const active = this.active === addedElement.id
+                setAttribute(addedElement, 'active', active);
+                setAttribute(tab, 'active', active);
             }
 
             for (const deletedElement of deletedElements) {
-                setAttribute(deletedElement, 'active', false);
+                this.#tabs.find(tab => tab.id === `#${deletedElement.id}-tab`)?.remove();
                 if (this.active === deletedElement.id) {
                     this.active = null;
-                }
-
-                const tab = this.#tabs.find(tab => tab.id === `#${deletedElement.id}-tab`);
-                if (tab) {
-                    this.removeChild(tab);
                 }
             }
 
@@ -58,7 +43,7 @@ export class Tabs extends Component {
             if (attribute === 'active') {
                 for (const [slot, elements] of this.slots) {
                     for (const element of elements) {
-                        const id = slot ? getAttribute(element, 'content') : element.id;
+                        const id = slot ? element.content.id : element.id;
                         const active = getAttribute(element, attribute);
                         if (active && id === previousValue) {
                             setAttribute(element, attribute, false);

@@ -4,16 +4,18 @@ export const tabDrop = event => {
     const id = dataTransfer.getData('id');
     const tab = document.querySelector(`#${id}-tab`);
     const content = document.querySelector(`#${id}`);
-    const targetParent = target.parentElement;
-    const currentParent = tab.parentElement;
-    if (currentParent === targetParent) {
-        const children = Array.from(currentParent.children);
-        targetParent.insertBefore(tab, children.indexOf(target) - children.indexOf(tab) === 1 ? target.nextSibling : target);
-    } else {
-        targetParent.insertBefore(tab, target);
-    }
+    const targetTabs = target.parentElement;
+    const sourceTabs = tab.parentElement;
+    if (sourceTabs.type === targetTabs.type) {
+        if (sourceTabs === targetTabs) {
+            const children = Array.from(sourceTabs.children);
+            targetTabs.insertBefore(tab, children.indexOf(target) - children.indexOf(tab) === 1 ? target.nextSibling : target);
+        } else {
+            targetTabs.insertBefore(tab, target);
+        }
 
-    targetParent.appendChild(content);
+        targetTabs.appendChild(content);
+    }
 };
 
 export const tabsDragOver = event => {

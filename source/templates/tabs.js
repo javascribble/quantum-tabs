@@ -2,25 +2,36 @@ export default `
 <style>
     :host {
         display: flex;
+    }
+
+    :host([dock="top"]), :host([dock="left"]) > #tabs, :host([dock="right"]) > #tabs {
         flex-direction: column;
     }
 
-    :host([dock]) {
-        
+    :host([dock="left"]) {
+        flex-direction: row;
     }
 
-    slot[name="tabs"] {
+    :host([dock="right"]) {
+        flex-direction: row-reverse;
+    }
+
+    :host([dock="bottom"]) {
+        flex-direction: column-reverse;
+    }    
+
+    #tabs {
         display: flex;
     }
 
-    slot#content::slotted(*) {
+    #contents::slotted(*) {
         flex-grow: 1;
     }
 
-    slot#content::slotted(:not([active])) {
+    #contents::slotted(:not([active])) {
         display: none;
     }
 </style>
-<slot name="tabs"></slot>
-<slot id="content"></slot>
+<slot id="tabs" name="tabs"></slot>
+<slot id="contents"></slot>
 `;
