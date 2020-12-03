@@ -17,16 +17,6 @@ quantum-tab {
     --cursor: pointer;
 }
 
-quantum-tab:hover:not([disabled]) {
-    --color: blue;
-    --background-color: aliceblue;
-}
-
-quantum-tab[disabled] {
-    --color: gray;
-    --cursor: default;
-}
-
 quantum-tab[theme=border] {
     --transition: border 0.1s;
     --border: solid var(--color) 1px;

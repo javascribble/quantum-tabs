@@ -8,9 +8,9 @@ export class Tab extends Component {
     constructor(content) {
         super();
 
-        this.content = content;
         this.id = `${content.id}-tab`;
         this.name = getAttribute(content, 'name') || content.id;
+        this.content = content.id;
         this.slot = 'tabs';
 
         addTabEvents(this);

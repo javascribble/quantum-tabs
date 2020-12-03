@@ -26,7 +26,7 @@ export class Tabs extends Component {
             }
 
             for (const deletedElement of deletedElements) {
-                this.#tabs.find(tab => tab.id === `#${deletedElement.id}-tab`)?.remove();
+                this.#tabs.find(tab => tab.id === `${deletedElement.id}-tab`)?.remove();
                 if (this.active === deletedElement.id) {
                     this.active = null;
                 }
@@ -43,7 +43,7 @@ export class Tabs extends Component {
             if (attribute === 'active') {
                 for (const [slot, elements] of this.slots) {
                     for (const element of elements) {
-                        const id = slot ? element.content.id : element.id;
+                        const id = slot ? element.content : element.id;
                         const active = getAttribute(element, attribute);
                         if (active && id === previousValue) {
                             setAttribute(element, attribute, false);
