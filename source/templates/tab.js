@@ -4,6 +4,10 @@ export default `
         display: inline-block;
     }
 
+    :host[pin] {
+        align-self: flex-start;
+    }
+
     button  {
         color: var(--color);
         background-color: var(--background-color);
