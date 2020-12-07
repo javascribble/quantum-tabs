@@ -3,6 +3,15 @@ body {
     margin: 0;
 }
 
+p {
+    font-weight: bold;
+}
+
+quantum-tabs {
+    margin: 20px;
+    --background-color: lightgrey;
+}
+
 quantum-tab {
     --color: darkblue;
     --background-color: none;
@@ -21,15 +30,6 @@ quantum-tab[theme=border] {
     --transition: border 0.1s;
     --border: solid var(--color) 1px;
 }
-
-quantum-tab[theme=raise] {
-    --transition: box-shadow 0.1s;
-    --box-shadow: 1px 1px 3px -1px black;
-}
-
-    quantum-tab[theme=raise]:hover:not([disabled]) {
-        --box-shadow: 2px 3px 4px -1px grey;
-    }
 
 quantum-tab[theme=accent] {
     --color: snow;

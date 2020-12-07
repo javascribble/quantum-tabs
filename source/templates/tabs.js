@@ -2,8 +2,9 @@ export default `
 <style>
     :host {
         display: flex;
+        background-color: var(--background-color);
     }
-
+    
     :host([dock="top"]), :host([dock="left"]) > #tabs, :host([dock="right"]) > #tabs {
         flex-direction: column;
     }
