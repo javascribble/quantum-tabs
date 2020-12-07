@@ -3,7 +3,7 @@ export const tabClick = event => {
     if (false) {
         event.preventDefault();
     } else {
-        const tab = event.currentTarget;
-        tab.parentElement.activate(tab.getAttribute('content'));
+        const { content } = event.currentTarget;
+        content.parentElement.activate(content.id);
     }
 };

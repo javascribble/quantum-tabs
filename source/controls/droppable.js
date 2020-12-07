@@ -1,20 +1,20 @@
+import { insertChild } from '../import.js';
+
 export const tabDrop = event => {
     event.preventDefault();
     const { target, dataTransfer } = event;
     const id = dataTransfer.getData('id');
-    const tab = document.querySelector(`#${id}-tab`);
-    const content = document.querySelector(`#${id}`);
-    const targetTabs = target.parentElement;
-    const sourceTabs = tab.parentElement;
-    if (sourceTabs.type === targetTabs.type) {
-        if (sourceTabs === targetTabs) {
-            const children = Array.from(sourceTabs.children);
-            targetTabs.insertBefore(tab, children.indexOf(target) - children.indexOf(tab) === 1 ? target.nextSibling : target);
+    const tab = document.querySelector(`#${id}`);
+    const sourceParent = tab.parentElement;
+    const targetParent = target.parentElement;
+    if (sourceParent.type === targetParent.type) {
+        const targetTabs = targetParent.tabs;
+        const targetIndex = targetTabs.indexOf(target);
+        if (sourceParent === targetParent) {
+            targetParent.insertBefore(tab, targetIndex - targetTabs.indexOf(tab) > 0 ? target.nextSibling : target);
         } else {
-            targetTabs.insertBefore(tab, target);
+            insertChild(targetParent, tab.content, targetIndex);
         }
-
-        targetTabs.appendChild(content);
     }
 };
 

@@ -22,7 +22,6 @@ export default `
         outline: var(--outline);
         padding: var(--padding);
         cursor: var(--cursor);
-        transition: var(--transition);
     }
 </style>
 <button draggable="true"></button>

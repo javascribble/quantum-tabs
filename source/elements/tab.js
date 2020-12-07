@@ -1,29 +1,32 @@
-import { Component, template, define, getAttribute } from '../import.js';
+import { Component, template, define, getAttribute, setAttribute } from '../import.js';
 import { addTabEvents } from '../utilities/events.js';
 import html from '../templates/tab.js';
 
 export class Tab extends Component {
     #button = this.shadowRoot.querySelector('button');
 
-    constructor(content) {
+    constructor(container, content) {
         super();
 
+        this.slot = 'tabs';
+        this.content = content;
         this.id = `${content.id}-tab`;
         this.name = getAttribute(content, 'name') || content.id;
-        this.content = content.id;
-        this.slot = 'tabs';
-
+        this.active = container.active === content.id;
+        setAttribute(content, 'active', this.active);
         addTabEvents(this);
     }
 
     static template = template(html);
 
-    static get observedAttributes() { return ['name', 'content', 'pin']; }
+    static get observedAttributes() { return ['name', 'active', 'pin']; }
 
-    attributeChangedCallback(attribute, previousValue, currentValue) {
-        if (attribute === 'name') {
-            this.#button.textContent = currentValue;
-        }
+    nameAttributeChanged(attribute, previousValue, currentValue) {
+        this.#button.textContent = currentValue;
+    }
+
+    activeAttributeChanged(attribute, previousValue, currentValue) {
+        setAttribute(this.content, attribute, currentValue);
     }
 }
 

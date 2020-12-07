@@ -1,10 +1,10 @@
-import { Component, template, define, getAttribute, setAttribute } from '../import.js';
+import { Component, template, define } from '../import.js';
 import { addTabsEvents } from '../utilities/events.js';
 import { Tab } from './tab.js'
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
-    #tabs = this.slots.get('tabs');
+    tabs = this.slots.get('tabs');
 
     constructor() {
         super();
@@ -16,48 +16,51 @@ export class Tabs extends Component {
 
     static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
 
-    slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
-        if (!slot.name) {
-            for (const addedElement of addedElements) {
-                const tab = this.#tabs.find(tab => tab.id === `${addedElement.id}-tab`) || this.appendChild(new Tab(addedElement));
-                const active = this.active === addedElement.id
-                setAttribute(addedElement, 'active', active);
-                setAttribute(tab, 'active', active);
-            }
+    defaultSlotChanged(slot, addedElements, deletedElements, currentElements) {
+        if (!this.active) {
+            this.#selectDefault(currentElements);
+        }
 
-            for (const deletedElement of deletedElements) {
-                this.#tabs.find(tab => tab.id === `${deletedElement.id}-tab`)?.remove();
-                if (this.active === deletedElement.id) {
-                    this.active = null;
-                }
+        for (const addedElement of addedElements) {
+            const tab = this.createTab(addedElement);
+            const index = currentElements.indexOf(addedElement);
+            if (this.tabs.length > index) {
+                this.insertBefore(tab, this.tabs[index]);
+            } else {
+                this.appendChild(tab);
             }
+        }
 
-            if (!this.active && !this.toggle && currentElements.length > 0) {
-                this.active = currentElements[0].id;
+        for (const deletedElement of deletedElements) {
+            this.tabs.find(tab => tab.content.id === deletedElement.id).remove();
+            if (this.active === deletedElement.id) {
+                this.#selectDefault(currentElements);
             }
         }
     }
 
-    attributeChangedCallback(attribute, previousValue, currentValue) {
-        if (previousValue !== currentValue) {
-            if (attribute === 'active') {
-                for (const [slot, elements] of this.slots) {
-                    for (const element of elements) {
-                        const id = slot ? element.content : element.id;
-                        const active = getAttribute(element, attribute);
-                        if (active && id === previousValue) {
-                            setAttribute(element, attribute, false);
-                        } else if (!active && id === currentValue) {
-                            setAttribute(element, attribute, true);
-                        }
-                    }
-                }
+    activeAttributeChanged(attribute, previousValue, currentValue) {
+        for (const tab of this.tabs) {
+            const id = tab.content.id;
+            const active = tab.active;
+            if (active && id === previousValue) {
+                tab.active = false;
+            } else if (!active && id === currentValue) {
+                tab.active = true;
             }
         }
+    }
+
+    createTab(content) {
+        return new Tab(this, content);
     }
 
     activate(id) {
         this.active = this.toggle && this.active === id ? false : id;
+    }
+
+    #selectDefault(currentElements) {
+        this.active = !this.toggle && currentElements.length > 0 ? currentElements[0].id : null;
     }
 }
 

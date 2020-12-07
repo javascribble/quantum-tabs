@@ -1,1 +1,1 @@
-export const { Component, template, define, castAttribute, getAttribute, setAttribute } = quantum;
+export const { Component, template, define, getAttribute, setAttribute, insertChild } = quantum;
