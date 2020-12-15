@@ -17,12 +17,12 @@ export class Tabs extends Component {
     static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
 
     defaultSlotChanged(slot, addedElements, deletedElements, currentElements) {
-        if (!this.active) {
-            this.#selectDefault(currentElements);
+        if (!this.active && !this.toggle) {
+            this.active = currentElements.first?.id;
         }
 
         for (const addedElement of addedElements) {
-            const tab = this.createTab(addedElement);
+            const tab = this.createTab(this, addedElement);
             const index = currentElements.indexOf(addedElement);
             if (this.tabs.length > index) {
                 this.insertBefore(tab, this.tabs[index]);
@@ -33,8 +33,8 @@ export class Tabs extends Component {
 
         for (const deletedElement of deletedElements) {
             this.tabs.find(tab => tab.content.id === deletedElement.id).remove();
-            if (this.active === deletedElement.id) {
-                this.#selectDefault(currentElements);
+            if (this.active === deletedElement.id && !this.toggle) {
+                this.active = currentElements.first?.id;
             }
         }
     }
@@ -51,16 +51,12 @@ export class Tabs extends Component {
         }
     }
 
-    createTab(content) {
-        return new Tab(this, content);
+    createTab(container, content) {
+        return new Tab(container, content);
     }
 
     activate(id) {
         this.active = this.toggle && this.active === id ? false : id;
-    }
-
-    #selectDefault(currentElements) {
-        this.active = !this.toggle && currentElements.length > 0 ? currentElements[0].id : null;
     }
 }
 
