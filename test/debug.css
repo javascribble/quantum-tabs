@@ -7,40 +7,20 @@ p {
     font-weight: bold;
 }
 
+div {
+    background-color: darkgrey;
+}
+
 quantum-tabs {
-    margin: 20px;
-    --background-color: lightgrey;
+    --background-color: lightgrey;  
 }
 
 quantum-tab {
-    --color: darkblue;
-    --background-color: none;
-    --letter-spacing: 0.1em;
+    --background-color: lightgrey;
     --text-transform: uppercase;
-    --box-sizing: border-box;
-    --border-radius: 3px;
     --padding: 0.7em 1em;
-    --font-size: inherit;
-    --line-height: 1em;
-    --outline: none;
-    --cursor: pointer;
 }
 
-quantum-tab[theme=border] {
-    --transition: border 0.1s;
-    --border: solid var(--color) 1px;
-}
-
-quantum-tab[theme=accent] {
-    --color: snow;
-    --background-color: navy;   
-}
-
-    quantum-tab[theme=accent]:hover:not([disabled]) {
-        --color: white;
-        --background-color: royalblue;  
-    }
-
-quantum-tab[theme=round] {
-    --border-radius: 100px;  
+quantum-tab[active] {
+    --background-color: darkgrey;
 }

@@ -1,7 +1,8 @@
 export default `
 <style>
     :host {
-        display: inline-block;
+        display: flex;
+        background-color: var(--background-color);        
     }
 
     :host[pin] {
@@ -9,19 +10,20 @@ export default `
     }
 
     button  {
+        flex-grow: 1;
+        background-color: transparent;
         color: var(--color);
-        background-color: var(--background-color);
         font-size: var(--font-size);
         letter-spacing: var(--letter-spacing);
         text-transform: var(--text-transform);
         line-height: var(--line -height);
-        box-sizing: var(--box-sizing);
+        box-sizing: var(--box-sizing, border-box);
         box-shadow: var(--box-shadow);
         border: var(--border);
         border-radius: var(--border-radius);
-        outline: var(--outline);
         padding: var(--padding);
-        cursor: var(--cursor);
+        cursor: var(--cursor, pointer);
+        outline: var(--outline, none);
     }
 </style>
 <button draggable="true"></button>

@@ -1,16 +1,15 @@
 export default `
 <style>
     :host {
-        display: flex;
         background-color: var(--background-color);
     }
     
-    :host([dock="top"]), :host([dock="left"]) > #tabs, :host([dock="right"]) > #tabs {
-        flex-direction: column;
+    :host, #tabs {
+        display: flex;
     }
 
-    :host([dock="left"]) {
-        flex-direction: row;
+    :host([dock="top"]), :host([dock="left"]) > #tabs, :host([dock="right"]) > #tabs {
+        flex-direction: column;
     }
 
     :host([dock="right"]) {
@@ -19,10 +18,6 @@ export default `
 
     :host([dock="bottom"]) {
         flex-direction: column-reverse;
-    }    
-
-    #tabs {
-        display: flex;
     }
 
     #contents::slotted(*) {
