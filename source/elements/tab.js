@@ -21,6 +21,8 @@ export class Tab extends Component {
 
     static get observedAttributes() { return ['name', 'active', 'pin']; }
 
+    get index() { return this.parentElement.slots.get(this.slot).indexOf(this); }
+
     nameAttributeChanged(attribute, previousValue, currentValue) {
         this.#button.textContent = currentValue;
     }
