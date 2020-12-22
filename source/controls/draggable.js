@@ -1,7 +1,8 @@
-export const tabDragStart = event => event.dataTransfer.setData('id', event.target.id);
-
-export const tabsDragStart = event => {
-    if (event.currentTarget.lock) {
+export const tabDragStart = event => {
+    const { dataTransfer, target } = event;
+    if (target.parentElement.lock) {
         event.preventDefault();
+    } else {
+        dataTransfer.setData('id', target.id);
     }
 };

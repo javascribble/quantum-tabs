@@ -1,17 +1,10 @@
 import { Component, template, define } from '../import.js';
-import { addTabsEvents } from '../utilities/events.js';
 import { createTab } from '../adapters/tab.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
     #tabs = this.slots.get('tabs');
     createTab = createTab;
-
-    constructor() {
-        super();
-
-        addTabsEvents(this);
-    }
 
     static template = template(html);
 

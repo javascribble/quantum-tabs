@@ -16,8 +16,9 @@ export const tabDrop = event => {
     }
 };
 
-export const tabsDragOver = event => {
-    if (!event.currentTarget.lock) {
+export const tabDragOver = event => {
+    if (!event.target.parentElement.lock) {
         event.preventDefault();
+        event.stopPropagation();
     }
 };
