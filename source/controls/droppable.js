@@ -8,6 +8,7 @@ export const tabDrop = event => {
     const sourceParent = tab.parentElement;
     const targetParent = target.parentElement;
     if (sourceParent.type === targetParent.type) {
+        event.stopPropagation();
         if (sourceParent === targetParent) {
             targetParent.insertBefore(tab, target.index - tab.index > 0 ? target.nextSibling : target);
         } else {

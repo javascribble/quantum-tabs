@@ -6,3 +6,6 @@ export const tabDragStart = event => {
         dataTransfer.setData('id', target.id);
     }
 };
+
+export const tabDragEnd = event => {
+};
