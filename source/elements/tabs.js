@@ -1,14 +1,15 @@
 import { Component, template, define } from '../import.js';
-import { createTab } from '../adapters/tab.js';
+import { Tab } from './tab.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Component {
     #tabs = this.slots.get('tabs');
-    createTab = createTab;
 
     static template = template(html);
 
     static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
+
+    createTab = (container, content) => new Tab(container, content);
 
     defaultSlotChanged(slot, addedElements, deletedElements, currentElements) {
         if (!currentElements.length) {
