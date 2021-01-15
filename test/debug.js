@@ -1,5 +1,5 @@
-import '/node_modules/@javascribble/quantum/source/export.js';
-import '/source/export.js';
+import '/node_modules/@javascribble/quantum/source/main.js';
+import '/source/main.js';
 
 const div = document.querySelector('#empty-div');
 div.addEventListener('dragover', event => event.preventDefault());

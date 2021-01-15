@@ -1,2 +1,4 @@
-export * from './elements/tab.js';
-export * from './elements/tabs.js';
+import * as tab from './elements/tab.js';
+import * as tabs from './elements/tabs.js';
+
+Object.assign(window, { ...tab, ...tabs });

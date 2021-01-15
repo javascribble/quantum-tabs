@@ -1,4 +1,3 @@
-import { Component, template, define } from '../import.js';
 import { Tab } from './tab.js';
 import html from '../templates/tabs.js';
 
@@ -11,7 +10,7 @@ export class Tabs extends Component {
 
     createTab = (container, content) => new Tab(container, content);
 
-    defaultSlotChanged(slot, addedElements, deletedElements, currentElements) {
+    slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (!currentElements.length) {
             this.remove();
         } else {
@@ -38,14 +37,16 @@ export class Tabs extends Component {
         }
     }
 
-    activeAttributeChanged(attribute, previousValue, currentValue) {
-        for (const tab of this.#tabs) {
-            const id = tab.content.id;
-            const active = tab.active;
-            if (active && id === previousValue) {
-                tab.active = false;
-            } else if (!active && id === currentValue) {
-                tab.active = true;
+    attributeChangedCallback(attribute, previousValue, currentValue) {
+        if (attribute === 'active' && previousValue !== currentValue) {
+            for (const tab of this.#tabs) {
+                const id = tab.content.id;
+                const active = tab.active;
+                if (active && id === previousValue) {
+                    tab.active = false;
+                } else if (!active && id === currentValue) {
+                    tab.active = true;
+                }
             }
         }
     }

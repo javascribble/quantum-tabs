@@ -1,4 +1,3 @@
-import { Component, template, define, getAttribute, setAttribute } from '../import.js';
 import { tabDragStart, tabDragEnd } from '../controls/draggable.js';
 import { tabDrop, tabDragOver } from '../controls/droppable.js';
 import { tabClick } from '../controls/click.js';
@@ -30,12 +29,15 @@ export class Tab extends Component {
 
     get index() { return this.parentElement.slots.get(this.slot).indexOf(this); }
 
-    nameAttributeChanged(attribute, previousValue, currentValue) {
-        this.#button.textContent = currentValue;
-    }
-
-    activeAttributeChanged(attribute, previousValue, currentValue) {
-        setAttribute(this.content, attribute, currentValue);
+    attributeChangedCallback(attribute, previousValue, currentValue) {
+        switch (attribute) {
+            case 'name':
+                this.#button.textContent = currentValue;
+                break;
+            case 'active':
+                setAttribute(this.content, attribute, currentValue);
+                break;
+        }
     }
 
     split() {
