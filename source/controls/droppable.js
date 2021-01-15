@@ -1,5 +1,3 @@
-import { insertChild } from '../import.js';
-
 export const tabDrop = event => {
     event.preventDefault();
     const { target, dataTransfer } = event;
@@ -12,7 +10,14 @@ export const tabDrop = event => {
         if (sourceParent === targetParent) {
             targetParent.insertBefore(tab, target.index - tab.index > 0 ? target.nextSibling : target);
         } else {
-            insertChild(targetParent, tab.content, target.index);
+            const child = tab.content;
+            const index = target.index;
+            const children = Array.from(targetParent.children);
+            if (index >= children.length) {
+                targetParent.appendChild(child)
+            } else {
+                targetParent.insertBefore(child, children[index]);
+            }
         }
     }
 };
