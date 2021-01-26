@@ -12,7 +12,7 @@ export class Tab extends Component {
         this.slot = 'tabs';
         this.content = content;
         this.id = `${content.id}-tab`;
-        this.name = getAttribute(content, 'name') || content.id;
+        this.name = getAttribute(content, 'tab') || content.id;
         this.active = container.active === content.id;
         setAttribute(content, 'active', this.active);
 
