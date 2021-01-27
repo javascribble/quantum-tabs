@@ -3,6 +3,8 @@ import { tabDrop, tabDragOver } from '../controls/droppable.js';
 import { tabClick } from '../controls/click.js';
 import html from '../templates/tab.js';
 
+const { Component, template, define, getAttribute, setAttribute } = quantum;
+
 export class Tab extends Component {
     #button = this.shadowRoot.querySelector('button');
 

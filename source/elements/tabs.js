@@ -1,6 +1,8 @@
 import { Tab } from './tab.js';
 import html from '../templates/tabs.js';
 
+const { Component, template, define } = quantum;
+
 export class Tabs extends Component {
     #tabs = this.slots.get('tabs');
 
