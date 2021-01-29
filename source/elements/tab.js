@@ -3,9 +3,9 @@ import { tabDrop, tabDragOver } from '../controls/droppable.js';
 import { tabClick } from '../controls/click.js';
 import html from '../templates/tab.js';
 
-const { Component, template, define, getAttribute, setAttribute } = quantum;
+const { getAttribute, setAttribute } = quantum;
 
-export class Tab extends Component {
+export class Tab extends Quantum {
     #button = this.shadowRoot.querySelector('button');
 
     constructor(container, content) {
@@ -24,8 +24,6 @@ export class Tab extends Component {
         this.addEventListener('drop', tabDrop);
         this.addEventListener('click', tabClick);
     }
-
-    static template = template(html);
 
     static get observedAttributes() { return ['name', 'active', 'pin']; }
 
@@ -49,4 +47,4 @@ export class Tab extends Component {
     }
 }
 
-define('quantum-tab', Tab);
+Tab.define('quantum-tab', html);

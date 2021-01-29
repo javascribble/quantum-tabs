@@ -1,4 +1,5 @@
-import * as tab from './elements/tab.js';
-import * as tabs from './elements/tabs.js';
+import { Tab } from './elements/tab.js';
+import { Tabs } from './elements/tabs.js';
 
-Object.assign(quantum, tab, tabs);
+Quantum.Tab = Tab;
+Quantum.Tabs = Tabs;

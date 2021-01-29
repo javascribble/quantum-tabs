@@ -1,12 +1,8 @@
 import { Tab } from './tab.js';
 import html from '../templates/tabs.js';
 
-const { Component, template, define } = quantum;
-
-export class Tabs extends Component {
+export class Tabs extends Quantum {
     #tabs = this.slots.get('tabs');
-
-    static template = template(html);
 
     static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
 
@@ -60,4 +56,4 @@ export class Tabs extends Component {
     }
 }
 
-define('quantum-tabs', Tabs);
+Tabs.define('quantum-tabs', html);
