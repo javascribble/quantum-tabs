@@ -16,7 +16,7 @@ export class Tabs extends Quantum {
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
-        if (attribute === 'active' && previousValue !== currentValue) {
+        if (attribute === 'active') {
             for (const element of this.#tabs) element.toggleAttribute(attribute, element.getAttribute(attributes.content) === currentValue);
             for (const element of this.#contents) element.toggleAttribute(attribute, element.id === currentValue);
         }
