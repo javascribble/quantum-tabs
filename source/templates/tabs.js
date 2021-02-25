@@ -1,9 +1,5 @@
 export default `
 <style>
-    :host {
-        background-color: var(--background-color);
-    }
-    
     :host, #tabs {
         display: flex;
     }

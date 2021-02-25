@@ -7,20 +7,16 @@ p {
     font-weight: bold;
 }
 
-div {
+div[slot=tabs] {
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 1em;
+}
+
+div[active] {
     background-color: darkgrey;
 }
 
 quantum-tabs {
-    --background-color: lightgrey;  
-}
-
-quantum-tab {
-    --background-color: lightgrey;
-    --text-transform: uppercase;
-    --padding: 0.7em 1em;
-}
-
-quantum-tab[active] {
-    --background-color: darkgrey;
+    background-color: lightgrey;
 }

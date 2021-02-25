@@ -6,47 +6,31 @@
     <body>
         <p>Dock Top</p>
         <quantum-tabs dock="top">
-            <div id="tab1">tab 1 content</div>
-            <div id="tab2">tab 2 content</div>
-            <div id="tab3">tab 3 content</div>
+            <div content="content1" slot="tabs" draggable="true">tab 1</div>
+            <div content="content2" slot="tabs" draggable="true">tab 2</div>
+            <div id="content1">tab 1 content</div>
+            <div id="content2">tab 2 content</div>
         </quantum-tabs>
-        <p>Dock Left</p>
-        <quantum-tabs dock="left">
-            <div id="tab4">tab 4 content</div>
-            <div id="tab5">tab 5 content</div>
-            <div id="tab6">tab 6 content</div>
+        <p>Dock Left Toggle</p>
+        <quantum-tabs dock="left" toggle>
+            <div content="content3" slot="tabs" draggable="true">tab 3</div>
+            <div content="content4" slot="tabs" draggable="true">tab 4</div>
+            <div id="content3">tab 3 content</div>
+            <div id="content4">tab 4 content</div>
         </quantum-tabs>
-        <p>Dock Right</p>
-        <quantum-tabs dock="right">
-            <div id="tab7">tab 7 content</div>
-            <div id="tab8">tab 8 content</div>
-            <div id="tab9">tab 9 content</div>
+        <p>Dock Right Drag Lock</p>
+        <quantum-tabs dock="right" lock>
+            <div content="content5" slot="tabs" draggable="true">tab 5</div>
+            <div content="content6" slot="tabs" draggable="true">tab 6</div>
+            <div id="content5">tab 5 content</div>
+            <div id="content6">tab 6 content</div>
         </quantum-tabs>
-        <p>Dock Bottom</p>
-        <quantum-tabs dock="bottom">
-            <div id="tab10">tab 10 content</div>
-            <div id="tab11">tab 11 content</div>
-            <div id="tab12">tab 12 content</div>
+        <p>Dock Bottom Drag Type</p>
+        <quantum-tabs dock="bottom" type="test">
+            <div content="content7" slot="tabs" draggable="true">tab 7</div>
+            <div content="content8" slot="tabs" draggable="true">tab 8</div>
+            <div id="content7">tab 7 content</div>
+            <div id="content8">tab 8 content</div>
         </quantum-tabs>
-        <p>Toggle</p>
-        <quantum-tabs toggle>
-            <div id="tab15">tab 15 content</div>
-            <div id="tab16">tab 16 content</div>
-            <div id="tab17">tab 17 content</div>
-        </quantum-tabs>
-        <p>Drag Lock</p>
-        <quantum-tabs lock>
-            <div id="tab16">tab 16 content</div>
-            <div id="tab17">tab 17 content</div>
-            <div id="tab18">tab 18 content</div>
-        </quantum-tabs>
-        <p>Drag Type</p>
-        <quantum-tabs type="test">
-            <div id="tab19">tab 19 content</div>
-            <div id="tab20">tab 20 content</div>
-            <div id="tab21">tab 21 content</div>
-        </quantum-tabs>
-        <p>Split Tabs</p>
-        <div id="empty-div" style="height: 30px;"></div>
     </body>
 </html>

@@ -1,9 +1,11 @@
+import { attributes } from '../constants/options.js';
+
 export const tabDragStart = event => {
-    const { dataTransfer, target } = event;
+    const { target, dataTransfer } = event;
     if (target.parentElement.lock) {
         event.preventDefault();
     } else {
-        dataTransfer.setData('id', target.id);
+        dataTransfer.setData(attributes.content, target.getAttribute(attributes.content));
     }
 };
 

@@ -1,8 +1,6 @@
-export const tabClick = event => {
-    const { content } = event.currentTarget;
-    content.parentElement.activate(content.id);
-};
+import { attributes } from '../constants/options.js';
 
-export const pinClick = event => {
-    event.preventDefault();
+export const tabClick = event => {
+    const target = event.currentTarget;
+    target.parentElement.activate(target.getAttribute(attributes.content));
 };

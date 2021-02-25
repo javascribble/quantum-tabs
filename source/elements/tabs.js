@@ -1,53 +1,24 @@
-import { Tab } from './tab.js';
+import { addTabEvents, removeTabEvents } from '../utilities/events.js';
+import { attributes } from '../constants/options.js';
 import html from '../templates/tabs.js';
 
 export class Tabs extends Quantum {
     #tabs = this.slots.get('tabs');
+    #contents = this.slots.get('');
 
     static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
 
-    createTab = (container, content) => new Tab(container, content);
-
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
-        if (!slot.name) {
-            if (!currentElements.length) {
-                this.remove();
-            } else {
-                if (!this.active && !this.toggle) {
-                    this.active = currentElements[0].id;
-                }
-
-                for (const addedElement of addedElements) {
-                    const tab = this.createTab(this, addedElement);
-                    const index = currentElements.indexOf(addedElement);
-                    if (this.#tabs.length > index) {
-                        this.insertBefore(tab, this.#tabs[index]);
-                    } else {
-                        this.appendChild(tab);
-                    }
-                }
-
-                for (const deletedElement of deletedElements) {
-                    this.#tabs.find(tab => tab.content.id === deletedElement.id).remove();
-                    if (this.active === deletedElement.id && !this.toggle) {
-                        this.active = currentElements[0].id;
-                    }
-                }
-            }
+        if (slot.name === 'tabs') {
+            for (const addedElement of addedElements) addTabEvents(addedElement);
+            for (const deletedElement of deletedElements) removeTabEvents(deletedElement);
         }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
         if (attribute === 'active' && previousValue !== currentValue) {
-            for (const tab of this.#tabs) {
-                const id = tab.content.id;
-                const active = tab.active;
-                if (active && id === previousValue) {
-                    tab.active = false;
-                } else if (!active && id === currentValue) {
-                    tab.active = true;
-                }
-            }
+            for (const element of this.#tabs) element.toggleAttribute(attribute, element.getAttribute(attributes.content) === currentValue);
+            for (const element of this.#contents) element.toggleAttribute(attribute, element.id === currentValue);
         }
     }
 
