@@ -1,6 +1,5 @@
 import { addTabEvents, removeTabEvents } from '../utilities/events.js';
 import { attributes } from '../constants/options.js';
-import html from '../templates/tabs.js';
 
 export class Tabs extends Quantum {
     #tabs = this.slots.get('tabs');
@@ -26,5 +25,3 @@ export class Tabs extends Quantum {
         this.active = this.toggle && this.active === id ? false : id;
     }
 }
-
-Tabs.define('quantum-tabs', html);
