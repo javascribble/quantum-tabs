@@ -15,6 +15,8 @@ export class Tabs extends Quantum {
 
         if (!this.leaf && this.children.length === 0) {
             this.remove();
+        } else {
+            this.activate(this.active);
         }
     }
 
