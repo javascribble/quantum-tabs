@@ -2,7 +2,7 @@ import { tabDragStart, tabDragEnd } from '../controls/draggable.js';
 import { tabDrop, tabDragOver } from '../controls/droppable.js';
 import { tabClick } from '../controls/click.js';
 
-export const addTabEvents = tab => {
+export const addEvents = tab => {
     tab.addEventListener('dragstart', tabDragStart);
     tab.addEventListener('dragover', tabDragOver);
     tab.addEventListener('dragend', tabDragEnd);
@@ -10,7 +10,7 @@ export const addTabEvents = tab => {
     tab.addEventListener('click', tabClick);
 };
 
-export const removeTabEvents = tab => {
+export const removeEvents = tab => {
     tab.removeEventListener('dragstart', tabDragStart);
     tab.removeEventListener('dragover', tabDragOver);
     tab.removeEventListener('dragend', tabDragEnd);

@@ -1,22 +1,25 @@
 import { attributes } from '../constants/options.js';
 
+const { indexOf, find } = Array.prototype;
+
 export const tabDrop = event => {
     event.preventDefault();
     const { target, dataTransfer } = event;
-    const attribute = dataTransfer.getData(attributes.content);
-    const tab = document.querySelector(`[${attributes.content}="${attribute}"]`);
-    const content = document.querySelector(`#${attribute}`);
-    const sourceParent = content.parentElement;
+    const attribute = dataTransfer.getData(attributes.tab);
+    const elements = document.querySelectorAll(`[${attributes.tab}="${attribute}"]`);
+    const tab = find.call(elements, tab => tab.slot);
+    const sourceParent = tab.parentElement;
     const targetParent = target.parentElement;
     if (sourceParent.type === targetParent.type) {
         event.stopPropagation();
         if (sourceParent === targetParent) {
-            const tabIndex = Array.prototype.indexOf.call(sourceParent.children, tab);
-            const targetIndex = Array.prototype.indexOf.call(targetParent.children, target);
+            const tabIndex = indexOf.call(sourceParent.children, tab);
+            const targetIndex = indexOf.call(targetParent.children, target);
             targetParent.insertBefore(tab, targetIndex - tabIndex > 0 ? target.nextSibling : target);
         } else {
-            targetParent.insertBefore(tab, target);
-            targetParent.insertBefore(content, target);
+            for (const element of elements) {
+                targetParent.insertBefore(element, target);
+            }
         }
     }
 };

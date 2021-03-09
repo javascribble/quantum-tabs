@@ -1,3 +1,4 @@
 export const attributes = {
-    content: 'content'
+    active: 'active',
+    tab: 'tab'
 };

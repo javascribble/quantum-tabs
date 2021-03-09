@@ -5,7 +5,7 @@ export const tabDragStart = event => {
     if (target.parentElement.lock) {
         event.preventDefault();
     } else {
-        dataTransfer.setData(attributes.content, target.getAttribute(attributes.content));
+        dataTransfer.setData(attributes.tab, target.getAttribute(attributes.tab));
     }
 };
 
