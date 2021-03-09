@@ -12,6 +12,10 @@ export class Tabs extends Quantum {
             for (const addedElement of addedElements) addTabEvents(addedElement);
             for (const deletedElement of deletedElements) removeTabEvents(deletedElement);
         }
+
+        if (this.children.length === 0) {
+            this.remove();
+        }
     }
 
     attributeChangedCallback(attribute, previousValue, currentValue) {
