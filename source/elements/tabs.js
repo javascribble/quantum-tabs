@@ -5,7 +5,7 @@ export class Tabs extends Quantum {
     #tabs = this.slots.get('tabs');
     #contents = this.slots.get('');
 
-    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type']; }
+    static get observedAttributes() { return ['active', 'toggle', 'dock', 'lock', 'type', 'leaf']; }
 
     slotChangedCallback(slot, addedElements, deletedElements, currentElements) {
         if (slot.name === 'tabs') {
@@ -13,7 +13,7 @@ export class Tabs extends Quantum {
             for (const deletedElement of deletedElements) removeTabEvents(deletedElement);
         }
 
-        if (this.children.length === 0) {
+        if (!this.leaf && this.children.length === 0) {
             this.remove();
         }
     }
