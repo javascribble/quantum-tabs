@@ -10,7 +10,7 @@
         "live-server": "*"
     },
     "scripts": {
-        "build": "cd ../rollup-quantum-build && npm start ../quantum-tabs/source/main.js ../quantum-tabs/build",
+        "build": "cd ../rollup-quantum-build && npm start ../quantum-tabs/source ../quantum-tabs/build",
         "start": "live-server --open=/test/debug.html",
         "postversion": "npm publish --access public"
     },
