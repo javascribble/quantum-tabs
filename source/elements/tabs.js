@@ -13,13 +13,8 @@ export class Tabs extends Quantum {
         validateActive(this, addedElements, deletedElements, currentElements);
 
         if (slot.name) {
-            for (const addedElement of addedElements) {
-                addEvents(addedElement);
-            }
-
-            for (const deletedElement of deletedElements) {
-                removeEvents(deletedElement);
-            }
+            addEvents(addedElements);
+            removeEvents(deletedElements);
         }
 
         if (!this.leaf && !this.children.length) {
